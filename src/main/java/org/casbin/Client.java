@@ -37,7 +37,21 @@ public class Client {
                 CustomFunction customFunction = DynamicClassGenerator.generateClass(methodName, codes);
                 enforcer.addFunction(methodName, customFunction);
             }
-            CommandExecutor commandExecutor = new CommandExecutor(enforcer, commandName, cmd.getArgs());
+
+            String[] requestParts = new String[0];
+            if (cmd.hasOption("r")) {
+                String requestStr = cmd.getOptionValue("r");
+                if (requestStr.contains("\n")) {
+                    requestParts = requestStr.split("\n");
+                } else {
+                    requestParts = requestStr.split(",");
+                }
+                for (int i = 0; i < requestParts.length; i++) {
+                    requestParts[i] = requestParts[i].trim();
+                }
+            }
+
+            CommandExecutor commandExecutor = new CommandExecutor(enforcer, commandName, requestParts);
             Object o = commandExecutor.outputResult();
             System.out.println(o);
             return o.toString();
@@ -76,6 +90,10 @@ public class Client {
         options.addOption(option);
 
         option = new Option("p", "policy", true, "the path of the policy file or policy text");
+        option.hasArg();
+        options.addOption(option);
+
+        option = new Option("r", "request", true, "the request");
         option.hasArg();
         options.addOption(option);
 

@@ -115,6 +115,16 @@ public class VersionUtil {
                     }
                 }
             } else {
+                if(!commitCount.isEmpty()){
+                    System.out.println("!commitCount.isEmpty()");
+                }
+                if(!commitCount.equals("0")){
+                    System.out.println("!commitCount.equals(\"0\"");
+                }
+                if(!commitCount.equals("Unknown")){
+                    System.out.println("!commitCount.equals(\"Unknown\")");
+                }
+
                 if(!commitCount.isEmpty() && !commitCount.equals("0") && !commitCount.equals("Unknown")) {
                     System.out.println("commitCount if in");
                     if (matcher.find()) {
@@ -126,6 +136,7 @@ public class VersionUtil {
             }
         }
         System.out.println("after tag: " + tag);
+        System.out.println("commitCount: " + commitCount);
         if ((commitCount.isEmpty() || commitCount.equals("0") || commitCount.equals("Unknown")) && (!tag.isEmpty() && !tag.equals("Unknown"))) {
             return tag;
         }

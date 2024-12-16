@@ -86,19 +86,19 @@ public class VersionUtil {
         String commitId = properties.getProperty("git.commit.id.abbrev", "Unknown");
         String tag = properties.getProperty("git.closest.tag.name", "Unknown");
         String commitCount = properties.getProperty("git.closest.tag.commit.count", "Unknown");
+
+        String commitMessage = properties.getProperty("git.commit.message.full", "Unknown");
+        Pattern pattern = Pattern.compile("^(fix|feat|chore|docs|style|refactor|test|perf|build|ci):");
+        Matcher matcher = pattern.matcher(commitMessage);
         System.out.println("commitId: " + commitId);
         System.out.println("tag: " + tag);
         System.out.println("commitCount: " + commitCount);
+        System.out.println("commitMessage: " + commitMessage);
         if(tag.isEmpty() || tag.equals("Unknown")) {
             String tags = properties.getProperty("git.tags", "Unknown");
             System.out.println("tags: " + tags);
             tag = tags;
             if(tags.isEmpty() || tags.equals("Unknown")) {
-                String commitMessage = properties.getProperty("git.commit.message.full", "Unknown");
-                Pattern pattern = Pattern.compile("^(fix|feat|chore|docs|style|refactor|test|perf|build|ci):");
-                Matcher matcher = pattern.matcher(commitMessage);
-                System.out.println("commitMessage: " + commitMessage);
-
                 InputStream versionInputStream = Client.class.getResourceAsStream("/META-INF/lastCli.version");
                 if (versionInputStream != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(versionInputStream, StandardCharsets.UTF_8));
@@ -113,10 +113,17 @@ public class VersionUtil {
                         }
                     }
                 }
+            } else {
+                if(!commitCount.isEmpty() && !commitCount.equals("0") && !commitCount.equals("Unknown")) {
+                    if (matcher.find()) {
+                        System.out.println("matcher.find()");
+                        tag = calculateNewVersion(tag, matcher.group(1));
+                    }
+                }
             }
         }
         System.out.println("after tag: " + tag);
-        if ((commitCount.isEmpty() || commitCount.equals("0")) && (!tag.isEmpty() && !tag.equals("Unknown"))) {
+        if ((commitCount.isEmpty() || commitCount.equals("0") || commitCount.equals("Unknown")) && (!tag.isEmpty() && !tag.equals("Unknown"))) {
             return tag;
         }
         return commitId;

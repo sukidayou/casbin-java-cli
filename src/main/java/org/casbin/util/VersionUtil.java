@@ -99,6 +99,7 @@ public class VersionUtil {
             System.out.println("tags: " + tags);
             tag = tags;
             if(tags.isEmpty() || tags.equals("Unknown")) {
+                System.out.println("tags if in");
                 InputStream versionInputStream = Client.class.getResourceAsStream("/META-INF/lastCli.version");
                 if (versionInputStream != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(versionInputStream, StandardCharsets.UTF_8));
@@ -115,9 +116,11 @@ public class VersionUtil {
                 }
             } else {
                 if(!commitCount.isEmpty() && !commitCount.equals("0") && !commitCount.equals("Unknown")) {
+                    System.out.println("commitCount if in");
                     if (matcher.find()) {
                         System.out.println("matcher.find()");
                         tag = calculateNewVersion(tag, matcher.group(1));
+                        commitCount = "0";
                     }
                 }
             }

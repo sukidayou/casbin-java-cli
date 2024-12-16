@@ -53,7 +53,7 @@ public class VersionUtil {
         if(tag.isEmpty()) {
             tag = properties.getProperty("git.tags", "Unknown");
         }
-        if (commitCount.isEmpty()) {
+        if ((commitCount.isEmpty() || commitCount.equals("0")) && !tag.isEmpty()) {
             return tag;
         }
         return commitId;

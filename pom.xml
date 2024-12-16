@@ -141,6 +141,10 @@
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/git.properties</generateGitPropertiesFilename>
                     <format>properties</format>
+                    <gitDescribe>
+                        <always>true</always>
+                        <tags>true</tags>
+                    </gitDescribe>
                 </configuration>
             </plugin>
         </plugins>

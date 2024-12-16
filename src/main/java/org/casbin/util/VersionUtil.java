@@ -139,5 +139,4 @@ public class VersionUtil {
 
         return handler.getDependencyVersion();
     }
-
 }

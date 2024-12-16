@@ -114,24 +114,14 @@ public class VersionUtil {
                         }
                     }
                 }
-            } else {
-                if(!commitCount.isEmpty()){
-                    System.out.println("!commitCount.isEmpty()");
-                }
-                if(!commitCount.equals("0")){
-                    System.out.println("!commitCount.equals(\"0\"");
-                }
-                if(!commitCount.equals("Unknown")){
-                    System.out.println("!commitCount.equals(\"Unknown\")");
-                }
-
-                if(!commitCount.isEmpty() && !commitCount.equals("0") && !commitCount.equals("Unknown")) {
-                    System.out.println("commitCount if in");
-                    if (matcher.find()) {
-                        System.out.println("matcher.find()");
-                        tag = calculateNewVersion(tag, matcher.group(1));
-                        commitCount = "0";
-                    }
+            }
+        }else {
+            if(!commitCount.isEmpty() && !commitCount.equals("0") && !commitCount.equals("Unknown")) {
+                System.out.println("commitCount if in");
+                if (matcher.find()) {
+                    System.out.println("matcher.find()");
+                    tag = calculateNewVersion(tag, matcher.group(1));
+                    commitCount = "0";
                 }
             }
         }
